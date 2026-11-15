@@ -10,16 +10,80 @@
 
 // In-Memory relational state initialized with seed data matching 002_seed_data.sql
 const memoryDb = {
-  // 1. Registered platform users with role assignments
+  // 1. Registered platform users with role assignments and detailed enterprise profile records
   users: [
     // Administrator account with full system authority
-    { id: 1, name: 'Admin User', email: 'admin@b2b.com', password: 'admin123', role: 'admin', company: 'B2B Corp Global HQ', status: 'active', joined: '2024-01-10' },
+    {
+      id: 1,
+      name: 'Admin User',
+      email: 'admin@b2b.com',
+      password: 'admin123',
+      role: 'admin',
+      company: 'B2B Corp Global HQ',
+      status: 'active',
+      joined: '2024-01-10',
+      title: 'Chief Procurement Officer',
+      phone: '+1 (800) 555-0199',
+      address: '100 Enterprise Way, Suite 400, Chicago, IL 60601',
+      taxId: 'US-EIN-88492019',
+      creditLimit: 250000,
+      paymentTerms: 'Net-30',
+      loadingDock: 'Central Distribution Gate 1'
+    },
     // Sales Representative handling fulfillment and customer orders
-    { id: 2, name: 'Sarah Sales', email: 'sales@b2b.com', password: 'sales123', role: 'sales', company: 'B2B Corp Global HQ', status: 'active', joined: '2024-02-15' },
+    {
+      id: 2,
+      name: 'Sarah Sales',
+      email: 'sales@b2b.com',
+      password: 'sales123',
+      role: 'sales',
+      company: 'B2B Corp Global HQ',
+      status: 'active',
+      joined: '2024-02-15',
+      title: 'Senior Account Director',
+      phone: '+1 (800) 555-0142',
+      address: '100 Enterprise Way, Suite 400, Chicago, IL 60601',
+      taxId: 'US-EIN-88492019',
+      creditLimit: 100000,
+      paymentTerms: 'Net-30',
+      loadingDock: 'Sales Ops Dispatch Unit 4'
+    },
     // Wholesale Buyer placing volume orders
-    { id: 3, name: 'Bob Buyer', email: 'buyer@b2b.com', password: 'buyer123', role: 'customer', company: 'TechVentures Logistics Ltd', status: 'active', joined: '2024-03-01' },
+    {
+      id: 3,
+      name: 'Bob Buyer',
+      email: 'buyer@b2b.com',
+      password: 'buyer123',
+      role: 'customer',
+      company: 'TechVentures Logistics Ltd',
+      status: 'active',
+      joined: '2024-03-01',
+      title: 'VP of Global Logistics',
+      phone: '+1 (415) 890-2134',
+      address: '742 Market Street, 5th Floor, San Francisco, CA 94103',
+      taxId: 'CA-CORP-9921448',
+      creditLimit: 50000,
+      paymentTerms: 'Net-14',
+      loadingDock: 'Dock B - Bay 3 (Forklift Accessible)'
+    },
     // Additional Wholesale Client account
-    { id: 4, name: 'Alice Chen', email: 'alice@corp.com', password: 'alice123', role: 'customer', company: 'Nexus Supply Solutions', status: 'active', joined: '2024-03-20' },
+    {
+      id: 4,
+      name: 'Alice Chen',
+      email: 'alice@corp.com',
+      password: 'alice123',
+      role: 'customer',
+      company: 'Nexus Supply Solutions',
+      status: 'active',
+      joined: '2024-03-20',
+      title: 'Procurement Director',
+      phone: '+1 (212) 440-9812',
+      address: '350 5th Avenue, Suite 1200, New York, NY 10118',
+      taxId: 'NY-BUS-4819203',
+      creditLimit: 75000,
+      paymentTerms: 'Net-14',
+      loadingDock: 'Warehouse West Entrance Receiving'
+    },
   ],
 
   // 2. Wholesale product catalog with SKUs, real-time inventory counts and safety thresholds

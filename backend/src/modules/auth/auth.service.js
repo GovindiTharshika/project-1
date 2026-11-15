@@ -54,7 +54,7 @@ class AuthService {
     // Record login event in system audit trail
     db.log('auth', user.name, `User ${user.email} signed in via JWT authentication`, 'blue');
 
-    // Return token and sanitized user profile
+    // Return token and sanitized user profile with complete enterprise metadata
     return {
       token,
       user: {
@@ -62,7 +62,15 @@ class AuthService {
         name: user.name,
         email: user.email,
         role: user.role,
-        company: user.company
+        company: user.company,
+        title: user.title || 'Procurement Executive',
+        phone: user.phone || '',
+        address: user.address || '',
+        taxId: user.taxId || '',
+        creditLimit: user.creditLimit || 50000,
+        paymentTerms: user.paymentTerms || 'Net-14',
+        loadingDock: user.loadingDock || '',
+        joined: user.joined || ''
       }
     };
   }
@@ -123,6 +131,101 @@ class AuthService {
         company: newUser.company
       }
     };
+  }
+
+  /**
+   * Fetches the complete enriched profile of the authenticated user
+   * @param {number} userId - ID of authenticated user
+   * @returns {Promise<object>} Complete user profile object
+   */
+  async getProfile(userId) {
+    const user = db.state.users.find(u => u.id === Number(userId));
+    if (!user) {
+      throw { status: 404, message: 'User account not found' };
+    }
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      company: user.company,
+      title: user.title || 'Procurement Executive',
+      phone: user.phone || '',
+      address: user.address || '',
+      taxId: user.taxId || '',
+      creditLimit: user.creditLimit || 50000,
+      paymentTerms: user.paymentTerms || 'Net-14',
+      loadingDock: user.loadingDock || '',
+      status: user.status,
+      joined: user.joined
+    };
+  }
+
+  /**
+   * Updates authenticated user profile details
+   * @param {number} userId - ID of authenticated user
+   * @param {object} updates - Fields to update (name, company, phone, address, title, taxId, loadingDock)
+   * @returns {Promise<object>} Sanitized updated user profile
+   */
+  async updateProfile(userId, updates) {
+    const user = db.state.users.find(u => u.id === Number(userId));
+    if (!user) {
+      throw { status: 404, message: 'User account not found' };
+    }
+
+    if (updates.name) user.name = updates.name.trim();
+    if (updates.company) user.company = updates.company.trim();
+    if (updates.phone) user.phone = updates.phone.trim();
+    if (updates.address) user.address = updates.address.trim();
+    if (updates.title) user.title = updates.title.trim();
+    if (updates.taxId) user.taxId = updates.taxId.trim();
+    if (updates.loadingDock) user.loadingDock = updates.loadingDock.trim();
+
+    db.log('user', user.name, `User ${user.email} updated profile details`, 'blue');
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      company: user.company,
+      title: user.title || '',
+      phone: user.phone || '',
+      address: user.address || '',
+      taxId: user.taxId || '',
+      creditLimit: user.creditLimit || 50000,
+      paymentTerms: user.paymentTerms || 'Net-14',
+      loadingDock: user.loadingDock || '',
+      status: user.status,
+      joined: user.joined
+    };
+  }
+
+  /**
+   * Updates authenticated user password
+   * @param {number} userId - ID of authenticated user
+   * @param {string} currentPassword - Current password for verification
+   * @param {string} newPassword - New password to set
+   * @returns {Promise<{message: string}>}
+   */
+  async changePassword(userId, currentPassword, newPassword) {
+    const user = db.state.users.find(u => u.id === Number(userId));
+    if (!user) {
+      throw { status: 404, message: 'User account not found' };
+    }
+
+    if (user.password !== currentPassword) {
+      throw { status: 400, message: 'Current password does not match' };
+    }
+
+    if (!newPassword || newPassword.length < 6) {
+      throw { status: 400, message: 'New password must be at least 6 characters long' };
+    }
+
+    user.password = newPassword;
+    db.log('auth', user.name, `User ${user.email} successfully updated account password`, 'blue');
+
+    return { message: 'Password updated successfully' };
   }
 }
 
