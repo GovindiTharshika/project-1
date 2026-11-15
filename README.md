@@ -38,38 +38,91 @@ This project delivers a multi-role **B2B Order Management Platform** for an ente
 
 ## 🚀 3. Quick Start & Execution Guide
 
-### Option 1: Instant Web Application (Zero-Config Preview)
-Open the standalone integrated application in any browser:
+### Prerequisites
+
+- Node.js 20 or later and npm
+- Docker Desktop with Docker Compose (only required for the full containerized stack)
+
+### Option 1: Run the backend and integrated web portal
+
+The backend uses an in-memory data store by default, so PostgreSQL is not required for a quick local run.
+
+From the repository root:
+
 ```powershell
-Start-Process index.html
-```
-
-### Option 2: Run Backend REST API Server
-Start the modular Node.js / NestJS-style backend server:
-```bash
+npm install --prefix backend
 npm start
-# or
-node backend/src/server.js
 ```
-- **Backend API:** `http://localhost:5000/api/v1`
-- **Health Check:** `http://localhost:5000/api/health`
 
-### Option 3: Run Automated Test Suite
-Execute the integration test suite validating JWT auth, RBAC guards, and REST APIs:
-```bash
+Open the integrated web portal at [http://localhost:5000](http://localhost:5000).
+
+Useful endpoints:
+
+- API directory: [http://localhost:5000/api/v1](http://localhost:5000/api/v1)
+- Health check: [http://localhost:5000/api/health](http://localhost:5000/api/health)
+
+To stop the server, press `Ctrl+C`.
+
+For automatic restart during development, use:
+
+```powershell
+npm run dev
+```
+
+### Option 2: Run the Vite React frontend separately
+
+Use this option when developing the React client in `frontend/`:
+
+```powershell
+npm install --prefix frontend
+npm run dev --prefix frontend
+```
+
+Vite will print the local URL, normally [http://localhost:5173](http://localhost:5173). Keep the backend running on port `5000`; the frontend API client is configured to use that server.
+
+To create and preview a production frontend build:
+
+```powershell
+npm run build --prefix frontend
+npm run preview --prefix frontend
+```
+
+### Option 3: Run the automated API test suite
+
+The test suite starts its own server on port `5003` and validates the health check, JWT login, RBAC, products, orders, invoices, and audit endpoints:
+
+```powershell
 npm test
-# or
+```
+
+The equivalent direct command is:
+
+```powershell
 node backend/tests/api.test.js
 ```
 
-### Option 4: Full Multi-Container Docker Stack
-Run the entire production ecosystem (PostgreSQL + Backend + Frontend) using Docker:
-```bash
-docker-compose up --build
+### Option 4: Run the full Docker Compose stack
+
+Docker Compose starts PostgreSQL, the backend API, and the Nginx-served React frontend:
+
+```powershell
+docker compose up --build
 ```
-- Frontend Web App: `http://localhost:3000`
-- Backend REST API: `http://localhost:5000`
-- PostgreSQL Database: `localhost:5432` (`b2b_orderhub`)
+
+Open:
+
+- Frontend: [http://localhost:3000](http://localhost:3000)
+- Backend API: [http://localhost:5000/api/v1](http://localhost:5000/api/v1)
+- Health check: [http://localhost:5000/api/health](http://localhost:5000/api/health)
+- PostgreSQL: `localhost:5432`, database `b2b_orderhub`, user `b2b_admin`
+
+Run the stack in the background with `docker compose up --build -d`, and stop it with:
+
+```powershell
+docker compose down
+```
+
+The PostgreSQL data is stored in the Docker volume `pgdata`. To remove the volume as well, use `docker compose down -v`.
 
 ---
 
