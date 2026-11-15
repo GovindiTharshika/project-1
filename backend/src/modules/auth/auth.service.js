@@ -1,0 +1,130 @@
+/**
+ * ============================================================================
+ * ARROWSTACK FULL STACK DEVELOPMENT INTERNSHIP — PROJECT 1
+ * Module: backend/src/modules/auth/auth.service.js
+ * Description: Authentication Service Layer
+ * Encapsulates credential validation, user registration, JWT token generation,
+ * and session audit logging.
+ * ============================================================================
+ */
+
+// Import shared database access layer
+const db = require('../../config/database');
+
+// Import JWT signing engine for issuing RFC 7519 HMAC-SHA256 tokens
+const { sign } = require('../../config/jwt');
+
+class AuthService {
+  /**
+   * Authenticates user credentials and issues a signed JWT token
+   * @param {string} email - Registered user email address
+   * @param {string} password - Raw user password
+   * @returns {Promise<{token: string, user: object}>}
+   */
+  async login(email, password) {
+    // Validate that both email and password are provided
+    if (!email || !password) {
+      throw { status: 400, message: 'Email and password are required' };
+    }
+
+    // Lookup user in relational user store by case-insensitive email match
+    const user = db.state.users.find(
+      u => u.email.toLowerCase() === email.toLowerCase() && u.password === password
+    );
+
+    // Guard: Reject if no user matches credentials
+    if (!user) {
+      throw { status: 401, message: 'Invalid email or password' };
+    }
+
+    // Guard: Prevent deactivated or suspended accounts from signing in
+    if (user.status !== 'active') {
+      throw { status: 403, message: 'Account is deactivated. Please contact your system administrator.' };
+    }
+
+    // Issue signed JWT token containing user identity and role claims
+    const token = sign({
+      sub: user.id,
+      email: user.email,
+      role: user.role,
+      company: user.company,
+      name: user.name
+    });
+
+    // Record login event in system audit trail
+    db.log('auth', user.name, `User ${user.email} signed in via JWT authentication`, 'blue');
+
+    // Return token and sanitized user profile
+    return {
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        company: user.company
+      }
+    };
+  }
+
+  /**
+   * Registers a new wholesale buyer or sales representative account
+   * @param {object} data - Registration payload (name, email, company, role, password)
+   * @returns {Promise<{token: string, user: object}>}
+   */
+  async register(data) {
+    const { name, email, company, role, password } = data;
+
+    // Validate required registration parameters
+    if (!name || !email || !company || !password) {
+      throw { status: 400, message: 'Missing required registration fields' };
+    }
+
+    // Enforce uniqueness constraint on email address
+    const existing = db.state.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+    if (existing) {
+      throw { status: 409, message: 'An account with this email address already exists' };
+    }
+
+    // Instantiate new user entity with active status and current date
+    const newUser = {
+      id: db.state.users.length + 1,
+      name,
+      email: email.toLowerCase(),
+      password,
+      role: role || 'customer',
+      company,
+      status: 'active',
+      joined: new Date().toISOString().slice(0, 10)
+    };
+
+    // Persist new user entity
+    db.state.users.push(newUser);
+
+    // Record registration in audit trail
+    db.log('user', newUser.name, `New user ${newUser.email} registered with role '${newUser.role}'`, 'blue');
+
+    // Generate immediate JWT session token for automatic onboarding
+    const token = sign({
+      sub: newUser.id,
+      email: newUser.email,
+      role: newUser.role,
+      company: newUser.company,
+      name: newUser.name
+    });
+
+    return {
+      token,
+      user: {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+        company: newUser.company
+      }
+    };
+  }
+}
+
+// Export singleton instance of AuthService
+module.exports = new AuthService();
