@@ -61,6 +61,29 @@ Useful endpoints:
 - API directory: [http://localhost:5000/api/v1](http://localhost:5000/api/v1)
 - Health check: [http://localhost:5000/api/health](http://localhost:5000/api/health)
 
+API routes (replace `:id` with the product, order, invoice, or user ID):
+
+| Method | URL |
+| --- | --- |
+| `GET` | `http://localhost:5000/api` |
+| `GET` | `http://localhost:5000/api/v1/auth/me` |
+| `POST` | `http://localhost:5000/api/v1/auth/login` |
+| `POST` | `http://localhost:5000/api/v1/auth/register` |
+| `GET` | `http://localhost:5000/api/v1/products` |
+| `GET` | `http://localhost:5000/api/v1/products/:id` |
+| `POST` | `http://localhost:5000/api/v1/products` |
+| `PATCH` | `http://localhost:5000/api/v1/products/:id/stock` |
+| `GET` | `http://localhost:5000/api/v1/orders` |
+| `GET` | `http://localhost:5000/api/v1/orders/:id` |
+| `POST` | `http://localhost:5000/api/v1/orders` |
+| `PATCH` or `PUT` | `http://localhost:5000/api/v1/orders/:id/status` |
+| `GET` | `http://localhost:5000/api/v1/invoices` |
+| `GET` | `http://localhost:5000/api/v1/invoices/:id` |
+| `PATCH` | `http://localhost:5000/api/v1/invoices/:id/pay` |
+| `GET` | `http://localhost:5000/api/v1/users` |
+| `PATCH` | `http://localhost:5000/api/v1/users/:id/toggle` |
+| `GET` | `http://localhost:5000/api/v1/audit` |
+
 To stop the server, press `Ctrl+C`.
 
 For automatic restart during development, use:
@@ -106,6 +129,7 @@ node backend/tests/api.test.js
 Docker Compose starts PostgreSQL, the backend API, and the Nginx-served React frontend:
 
 ```powershell
+Copy-Item .env.example .env
 docker compose up --build
 ```
 
