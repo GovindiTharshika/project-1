@@ -1,0 +1,25 @@
+{
+  "name": "b2b-orderhub-backend",
+  "version": "1.0.0",
+  "description": "NestJS/Node.js Modular REST API for B2B Order Management Platform",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node tests/api.test.js"
+  },
+  "dependencies": {
+    "pg": "^8.13.1",
+    "bcryptjs": "^2.4.3"
+  },
+  "keywords": [
+    "nestjs",
+    "nodejs",
+    "jwt",
+    "postgresql",
+    "b2b",
+    "order-management"
+  ],
+  "author": "Arrowstack Intern",
+  "license": "MIT"
+}
