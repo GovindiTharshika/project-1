@@ -7,7 +7,7 @@
 [![JWT](https://img.shields.io/badge/JWT-RFC%207519%20HMAC--SHA256-000000.svg)](https://jwt.io)
 [![Docker](https://img.shields.io/badge/Docker-Multi--Container-2496ED.svg)](https://www.docker.com)
 [![Build Status](https://img.shields.io/badge/Tests-100%25%20Passing-brightgreen.svg)]()
-[![Evaluation](https://img.shields.io/badge/Rubric-100%2F100-gold.svg)]()
+
 
 ---
 
