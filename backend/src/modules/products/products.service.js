@@ -134,5 +134,5 @@ class ProductsService {
   }
 }
 
-// Export singleton instance of ProductsService
-module.exports = new ProductsService();
+const productsInstance = new ProductsService();
+module.exports = process.env.USE_PG === 'true' ? require('./products.pg.service') : productsInstance;

@@ -229,5 +229,5 @@ class AuthService {
   }
 }
 
-// Export singleton instance of AuthService
-module.exports = new AuthService();
+const authInstance = new AuthService();
+module.exports = process.env.USE_PG === 'true' ? require('./auth.pg.service') : authInstance;

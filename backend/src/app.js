@@ -23,6 +23,8 @@ const auditController = require('./modules/audit/audit.controller');
 // Import authentication and authorization interceptors
 const authMiddleware = require('./middleware/auth.middleware');
 const requireRole = require('./middleware/roles.middleware');
+const metricsTracker = require('./middleware/metrics.middleware');
+const automationService = require('./modules/automation/automation.service');
 
 /**
  * Injects cross-origin resource sharing (CORS) headers into the response
@@ -61,6 +63,22 @@ function parseBody(req) {
  * @param {object} res - HTTP server response
  */
 async function handleRequest(req, res) {
+  // Performance & APM telemetry hook
+  const reqStart = Date.now();
+  const originalEnd = res.end;
+  let recorded = false;
+  res.end = function (...args) {
+    if (!recorded) {
+      recorded = true;
+      const durationMs = Date.now() - reqStart;
+      try {
+        const u = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+        metricsTracker.record(req.method, u.pathname, res.statusCode || 200, durationMs);
+      } catch {}
+    }
+    return originalEnd.apply(this, args);
+  };
+
   // Apply standard CORS headers to every request
   setCorsHeaders(res);
 
@@ -128,6 +146,18 @@ async function handleRequest(req, res) {
     }));
   }
 
+  // Real-Time Health Diagnostics (Section 17 Extension)
+  if (pathname === '/api/health/diagnostics' && method === 'GET') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify(metricsTracker.getDiagnostics(), null, 2));
+  }
+
+  // Real-Time APM & Performance Metrics API (Section 17 Extension)
+  if (pathname === '/api/v1/metrics' && method === 'GET') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify(metricsTracker.getSummary(), null, 2));
+  }
+
   // 2. Authentication endpoints (Public)
   if (pathname === '/api/v1/auth/login' && method === 'POST') {
     const body = await parseBody(req);
@@ -183,7 +213,8 @@ async function handleRequest(req, res) {
   const productStockMatch = pathname.match(/^\/api\/v1\/products\/(\d+)\/stock$/);
   if (productStockMatch && method === 'PATCH') {
     const id = productStockMatch[1];
-    return requireAuthWithRole(['admin'], async () => {
+    // Stock level adjustment permitted for Admin and Warehouse Manager roles
+    return requireAuthWithRole(['admin', 'warehouse'], async () => {
       const body = await parseBody(req);
       return productsController.handleUpdateStock(req, res, id, body);
     });
@@ -212,8 +243,8 @@ async function handleRequest(req, res) {
   const orderStatusMatch = pathname.match(/^\/api\/v1\/orders\/([^/]+)\/status$/);
   if (orderStatusMatch && (method === 'PATCH' || method === 'PUT')) {
     const id = orderStatusMatch[1];
-    // Advancing order status restricted to Administrator and Sales roles
-    return requireAuthWithRole(['admin', 'sales'], async () => {
+    // Advancing order status permitted for Administrator, Sales, and Warehouse roles
+    return requireAuthWithRole(['admin', 'sales', 'warehouse'], async () => {
       const body = await parseBody(req);
       return ordersController.handleUpdateStatus(req, res, id, body);
     });
@@ -262,6 +293,15 @@ async function handleRequest(req, res) {
       search: parsedUrl.searchParams.get('search')
     };
     return requireAuthWithRole(['admin', 'sales'], () => auditController.handleGetAll(req, res, query));
+  }
+
+  // 9. Automated Operations Pipeline (Section 17 Extension - Admin & Warehouse only)
+  if (pathname === '/api/v1/automation/run' && method === 'POST') {
+    return requireAuthWithRole(['admin', 'warehouse'], async () => {
+      const result = await automationService.runAutomatedOps(req.user);
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify(result, null, 2));
+    });
   }
 
   // Fallback: 404 Route Not Found

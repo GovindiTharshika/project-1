@@ -36,5 +36,5 @@ class AuditService {
   }
 }
 
-// Export singleton instance of AuditService
-module.exports = new AuditService();
+const auditInstance = new AuditService();
+module.exports = process.env.USE_PG === 'true' ? require('./audit.pg.service') : auditInstance;

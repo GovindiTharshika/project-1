@@ -76,5 +76,5 @@ class InvoicesService {
   }
 }
 
-// Export singleton instance of InvoicesService
-module.exports = new InvoicesService();
+const invoicesInstance = new InvoicesService();
+module.exports = process.env.USE_PG === 'true' ? require('./invoices.pg.service') : invoicesInstance;

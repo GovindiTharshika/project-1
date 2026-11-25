@@ -55,5 +55,5 @@ class UsersService {
   }
 }
 
-// Export singleton instance of UsersService
-module.exports = new UsersService();
+const usersInstance = new UsersService();
+module.exports = process.env.USE_PG === 'true' ? require('./users.pg.service') : usersInstance;

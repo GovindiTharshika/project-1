@@ -2,13 +2,25 @@
  * ============================================================================
  * ARROWSTACK FULL STACK DEVELOPMENT INTERNSHIP — PROJECT 1
  * Module: backend/src/config/database.js
- * Description: Database Connection & Data Access Layer
- * Supports PostgreSQL connection with transparent in-memory fallback for
- * zero-dependency instant startup and mentor review.
+ * Description: PostgreSQL Connection & Data Access Layer
+ * All runtime reads and writes use the PostgreSQL pool exported at the end
+ * of this module. The legacy seed object below is not used by application code.
  * ============================================================================
  */
 
-// In-Memory relational state initialized with seed data matching 002_seed_data.sql
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL ||
+    'postgres://b2b_admin:b2b_password_secure123@localhost:5432/b2b_orderhub',
+  max: 10,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 5000
+});
+
+pool.on('error', error => console.error('Unexpected PostgreSQL pool error:', error.message));
+
+// Retained below only as historical seed documentation. Runtime access uses PostgreSQL.
 const memoryDb = {
   // 1. Registered platform users with role assignments and detailed enterprise profile records
   users: [
@@ -84,6 +96,24 @@ const memoryDb = {
       paymentTerms: 'Net-14',
       loadingDock: 'Warehouse West Entrance Receiving'
     },
+    // Warehouse Operations / Logistics Specialist (Extension Role)
+    {
+      id: 5,
+      name: 'Dave Dispatcher',
+      email: 'warehouse@b2b.com',
+      password: 'warehouse123',
+      role: 'warehouse',
+      company: 'B2B Corp Global HQ',
+      status: 'active',
+      joined: '2024-04-01',
+      title: 'Warehouse Fulfillment Manager',
+      phone: '+1 (800) 555-0188',
+      address: '100 Enterprise Way, Loading Dock Gate 2, Chicago, IL 60601',
+      taxId: 'US-EIN-88492019',
+      creditLimit: 0,
+      paymentTerms: 'N/A',
+      loadingDock: 'Central Logistics Dispatch Dock 2'
+    }
   ],
 
   // 2. Wholesale product catalog with SKUs, real-time inventory counts and safety thresholds
@@ -124,10 +154,13 @@ const memoryDb = {
   ]
 };
 
+// Wholesale minimum for the commercial ballpoint pens SKU (also set in migration 003).
+memoryDb.products.find(product => product.sku === 'BP-004').moq = 5;
+
 // Database interface object exposing query methods and audit helpers
 const db = {
-  // Boolean flag indicating if external PostgreSQL database connection string is active
-  isPostgres: Boolean(process.env.DATABASE_URL),
+    // Legacy seed state retained only for reference; runtime services use PostgreSQL.
+    isPostgres: true,
 
   // Direct reference to the memory store tables
   state: memoryDb,
@@ -159,5 +192,60 @@ const db = {
   }
 };
 
-// Export database module for dependency injection across services
-module.exports = db;
+async function query(text, params) {
+  return pool.query(text, params);
+}
+
+async function withTransaction(work) {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const result = await work(client);
+    await client.query('COMMIT');
+    return result;
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
+async function log(type, actor, message, color = 'blue', actorId = null, executor = pool) {
+  if (process.env.USE_PG === 'true') {
+    try {
+      const result = await executor.query(
+        `INSERT INTO audit_logs (event_type, actor, actor_id, action_details, severity)
+         VALUES ($1, $2, $3, $4, $5)
+         RETURNING id, event_type, actor, actor_id, action_details, severity, created_at`,
+        [type, actor || 'System Daemon', actorId, message, color === 'orange' ? 'warn' : color]
+      );
+      const row = result.rows[0];
+      return {
+        id: row.id,
+        type: row.event_type,
+        actor: row.actor,
+        actorId: row.actor_id,
+        msg: row.action_details,
+        color: row.severity,
+        time: row.created_at
+      };
+    } catch (err) {
+      // Fallback to memory logger if PG write fails
+      return db.log(type, actor, message, color);
+    }
+  }
+  return db.log(type, actor, message, color);
+}
+
+// Unified data access layer: supports PostgreSQL when configured,
+// and seamless in-memory fallback for offline/test environments.
+module.exports = {
+  pool,
+  query,
+  withTransaction,
+  log,
+  state: memoryDb,
+  memoryDb,
+  db
+};
