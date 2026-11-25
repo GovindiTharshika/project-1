@@ -123,6 +123,9 @@ export default function Login() {
               <div style={{ cursor: 'pointer', color: 'var(--primary)', marginBottom: 3 }} onClick={() => quickDemo('sales@b2b.com', 'sales123')}>
                 🔑 <strong>Sales Rep:</strong> sales@b2b.com (Fulfillment)
               </div>
+              <div style={{ cursor: 'pointer', color: 'var(--primary)', marginBottom: 3 }} onClick={() => quickDemo('warehouse@b2b.com', 'warehouse123')}>
+                🔑 <strong>Warehouse:</strong> warehouse@b2b.com (Inventory & Dispatch)
+              </div>
               <div style={{ cursor: 'pointer', color: 'var(--primary)' }} onClick={() => quickDemo('buyer@b2b.com', 'buyer123')}>
                 🔑 <strong>Customer:</strong> buyer@b2b.com (Ordering)
               </div>
