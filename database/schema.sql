@@ -22,11 +22,18 @@ CREATE TABLE IF NOT EXISTS users (
     -- Bcrypt / PBKDF2 hashed password string
     password_hash VARCHAR(255) NOT NULL,
     -- System access role strictly bounded by CHECK constraint
-    role VARCHAR(20) NOT NULL CHECK (role IN ('admin', 'sales', 'customer')),
+    role VARCHAR(20) NOT NULL CHECK (role IN ('admin', 'sales', 'customer', 'warehouse')),
     -- Registered company or subsidiary organization name
     company VARCHAR(150) NOT NULL,
     -- Account lifecycle status (active, inactive, suspended)
     status VARCHAR(20) DEFAULT 'active' CHECK (status IN ('active', 'inactive', 'suspended')),
+    title VARCHAR(150),
+    phone VARCHAR(50),
+    address TEXT,
+    tax_id VARCHAR(100),
+    credit_limit NUMERIC(12, 2) DEFAULT 50000,
+    payment_terms VARCHAR(30) DEFAULT 'Net-14',
+    loading_dock VARCHAR(150),
     -- Timestamps for creation and update tracking
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -53,6 +60,8 @@ CREATE TABLE IF NOT EXISTS products (
     stock_quantity INT NOT NULL DEFAULT 0 CHECK (stock_quantity >= 0),
     -- Minimum threshold below which low-stock alerts are triggered
     min_stock_level INT NOT NULL DEFAULT 5 CHECK (min_stock_level >= 0),
+    -- Smallest allowed wholesale order quantity for this product
+    min_order_quantity INT NOT NULL DEFAULT 1 CHECK (min_order_quantity >= 1),
     -- Visual icon emoji for UI rendering
     emoji VARCHAR(20) DEFAULT '📦',
     -- Timestamps

@@ -13,9 +13,16 @@ CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
-    role VARCHAR(20) NOT NULL CHECK (role IN ('admin', 'sales', 'customer')),
+    role VARCHAR(20) NOT NULL CHECK (role IN ('admin', 'sales', 'customer', 'warehouse')),
     company VARCHAR(150) NOT NULL,
     status VARCHAR(20) DEFAULT 'active' CHECK (status IN ('active', 'inactive', 'suspended')),
+    title VARCHAR(150),
+    phone VARCHAR(50),
+    address TEXT,
+    tax_id VARCHAR(100),
+    credit_limit NUMERIC(12, 2) DEFAULT 50000,
+    payment_terms VARCHAR(30) DEFAULT 'Net-14',
+    loading_dock VARCHAR(150),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -30,6 +37,7 @@ CREATE TABLE IF NOT EXISTS products (
     price NUMERIC(10, 2) NOT NULL CHECK (price >= 0),
     stock_quantity INT NOT NULL DEFAULT 0 CHECK (stock_quantity >= 0),
     min_stock_level INT NOT NULL DEFAULT 5 CHECK (min_stock_level >= 0),
+    min_order_quantity INT NOT NULL DEFAULT 1 CHECK (min_order_quantity >= 1),
     emoji VARCHAR(20) DEFAULT '📦',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP

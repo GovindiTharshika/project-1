@@ -5,10 +5,11 @@
 
 -- SEED USERS (Password is 'password123' or role-specific)
 INSERT INTO users (id, name, email, password_hash, role, company, status) VALUES
-(1, 'Admin User', 'admin@b2b.com', '$2a$10$aSvfjIcanoxLoZ62Zjyqrehd22H.pM1x7r6VvtBDLwDB77AU1Is3W', 'admin', 'B2B Corp Global HQ', 'active'),
-(2, 'Sarah Sales', 'sales@b2b.com', '$2a$10$kthmwvK7w0XPpbV/Voe7zuFxRq9JepRRP.JlT9UEQByzKxocILOae', 'sales', 'B2B Corp Global HQ', 'active'),
-(3, 'Bob Buyer', 'buyer@b2b.com', '$2a$10$30VAeRuDg7aT5/BrzkOyFeqeQpOK8VwnQja4H.A8AK6.1ZqyDGmRS', 'customer', 'TechVentures Logistics Ltd', 'active'),
-(4, 'Alice Chen', 'alice@corp.com', '$2a$10$/RbrKGUxrM8GEwTIajtJ4OVenIB5f5.BVonxVUVpgE0aeYf5ZZunO', 'customer', 'Nexus Supply Solutions', 'active')
+(1, 'Admin User', 'admin@b2b.com', '$2a$10$pyh27RhaFdLMmTJJgQIivOwHF7XEMoQi6NOiEyp80cxiTyBFBGpZq', 'admin', 'B2B Corp Global HQ', 'active'),
+(2, 'Sarah Sales', 'sales@b2b.com', '$2a$10$7c88HxFQ2pdIh9MdaqPhwOa4Mh0jevo6qJA1oCQpBJQlHxxfUHqJG', 'sales', 'B2B Corp Global HQ', 'active'),
+(3, 'Bob Buyer', 'buyer@b2b.com', '$2a$10$PlVOVlf3piqjHJGmHu89Y.fqWMtoz3vmpERNm/QdMaOMNeaPHWRRe', 'customer', 'TechVentures Logistics Ltd', 'active'),
+(4, 'Alice Chen', 'alice@corp.com', '$2a$10$B0k49V8vOA9g5vfKdus45Oq7mlnWvSviSIFkt3VD2/nCCGeLXCemi', 'customer', 'Nexus Supply Solutions', 'active'),
+(5, 'Dave Dispatcher', 'warehouse@b2b.com', '$2a$10$pyh27RhaFdLMmTJJgQIivOwHF7XEMoQi6NOiEyp80cxiTyBFBGpZq', 'warehouse', 'B2B Corp Global HQ', 'active')
 ON CONFLICT (id) DO NOTHING;
 
 -- SEED PRODUCTS (Diverse B2B catalog)
@@ -24,6 +25,8 @@ INSERT INTO products (id, sku, name, category, description, price, stock_quantit
 (9, 'WC-009', 'Full HD 1080p Conference Webcam', 'Electronics', 'Wide-angle lens with dual noise-canceling stereo microphones', 69.99, 40, 10, '📷'),
 (10, 'SN-010', 'Self-Adhesive Notes Value Pack', 'Office Supplies', 'Multi-color pack of 12 pads (100 sheets each) 3x3 inches', 8.99, 210, 25, '🗒️')
 ON CONFLICT (id) DO NOTHING;
+
+UPDATE products SET min_order_quantity = 5 WHERE sku = 'BP-004';
 
 -- SEED ORDERS
 INSERT INTO orders (id, customer_id, total_amount, status, notes, order_date) VALUES
