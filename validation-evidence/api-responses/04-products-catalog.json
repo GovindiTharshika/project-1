@@ -1,0 +1,117 @@
+{
+  "success": true,
+  "count": 10,
+  "data": [
+    {
+      "id": 1,
+      "sku": "KB-001",
+      "name": "Wireless Ergonomic Keyboard",
+      "category": "Electronics",
+      "price": 49.99,
+      "stock": 150,
+      "minStock": 20,
+      "emoji": "⌨️",
+      "description": "Low-profile wireless mechanical keyboard with dual-mode connectivity"
+    },
+    {
+      "id": 2,
+      "sku": "HB-002",
+      "name": "USB-C Enterprise Hub 7-in-1",
+      "category": "Electronics",
+      "price": 34.99,
+      "stock": 85,
+      "minStock": 15,
+      "emoji": "🔌",
+      "description": "4K HDMI, Gigabit Ethernet, 100W Power Delivery and dual USB 3.2"
+    },
+    {
+      "id": 3,
+      "sku": "MS-003",
+      "name": "Dual Monitor Articulating Arm",
+      "category": "Furniture",
+      "price": 89,
+      "stock": 12,
+      "minStock": 10,
+      "emoji": "🖥️",
+      "description": "Heavy-duty gas spring aluminum monitor stand for dual 32\" screens"
+    },
+    {
+      "id": 4,
+      "sku": "BP-004",
+      "name": "Commercial Ballpoint Pens (Box 50)",
+      "category": "Office Supplies",
+      "price": 12.99,
+      "stock": 320,
+      "minStock": 40,
+      "emoji": "🖊️",
+      "description": "Bulk box of 50 smooth gel ink blue ballpoint pens for office use",
+      "moq": 5
+    },
+    {
+      "id": 5,
+      "sku": "WM-005",
+      "name": "Rechargeable Optical Mouse",
+      "category": "Electronics",
+      "price": 29.99,
+      "stock": 8,
+      "minStock": 10,
+      "emoji": "🖱️",
+      "description": "Precision 4000 DPI ergonomic silent click wireless mouse"
+    },
+    {
+      "id": 6,
+      "sku": "DL-006",
+      "name": "Dimmable LED Workstation Lamp",
+      "category": "Accessories",
+      "price": 44,
+      "stock": 0,
+      "minStock": 5,
+      "emoji": "💡",
+      "description": "Glare-free reading light with Qi wireless charging base"
+    },
+    {
+      "id": 7,
+      "sku": "AP-007",
+      "name": "Premium Multipurpose A4 Paper (Case)",
+      "category": "Office Supplies",
+      "price": 38.5,
+      "stock": 540,
+      "minStock": 60,
+      "emoji": "📄",
+      "description": "Case of 5 reams (2500 sheets) bright white 80gsm paper"
+    },
+    {
+      "id": 8,
+      "sku": "OC-008",
+      "name": "Executive Mesh Ergonomic Chair",
+      "category": "Furniture",
+      "price": 299,
+      "stock": 5,
+      "minStock": 5,
+      "emoji": "🪑",
+      "description": "High-back breathable mesh chair with 3D armrests and lumbar support"
+    },
+    {
+      "id": 9,
+      "sku": "WC-009",
+      "name": "Full HD 1080p Conference Webcam",
+      "category": "Electronics",
+      "price": 69.99,
+      "stock": 40,
+      "minStock": 10,
+      "emoji": "📷",
+      "description": "Wide-angle lens with dual noise-canceling stereo microphones"
+    },
+    {
+      "id": 10,
+      "sku": "SN-010",
+      "name": "Self-Adhesive Notes Value Pack",
+      "category": "Office Supplies",
+      "price": 8.99,
+      "stock": 210,
+      "minStock": 25,
+      "emoji": "🗒️",
+      "description": "Multi-color pack of 12 pads (100 sheets each) 3x3 inches"
+    }
+  ]
+}

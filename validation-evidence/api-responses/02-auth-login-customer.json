@@ -1,0 +1,18 @@
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoiYnV5ZXJAYjJiLmNvbSIsInJvbGUiOiJjdXN0b21lciIsImNvbXBhbnkiOiJUZWNoVmVudHVyZXMgTG9naXN0aWNzIEx0ZCIsIm5hbWUiOiJCb2IgQnV5ZXIiLCJpYXQiOjE3OTU2MTcxMjYsImV4cCI6MTc5NTcwMzUyNn0.DsWU6FZpnQei_q6AbT847T14sU8Xi_IsUtx4MSDKrsk",
+  "user": {
+    "id": 3,
+    "name": "Bob Buyer",
+    "email": "buyer@b2b.com",
+    "role": "customer",
+    "company": "TechVentures Logistics Ltd",
+    "title": "VP of Global Logistics",
+    "phone": "+1 (415) 890-2134",
+    "address": "742 Market Street, 5th Floor, San Francisco, CA 94103",
+    "taxId": "CA-CORP-9921448",
+    "creditLimit": 50000,
+    "paymentTerms": "Net-14",
+    "loadingDock": "Dock B - Bay 3 (Forklift Accessible)",
+    "joined": "2024-03-01"
+  }
+}

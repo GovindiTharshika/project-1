@@ -1,0 +1,18 @@
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiYWRtaW5AYjJiLmNvbSIsInJvbGUiOiJhZG1pbiIsImNvbXBhbnkiOiJCMkIgQ29ycCBHbG9iYWwgSFEiLCJuYW1lIjoiQWRtaW4gVXNlciIsImlhdCI6MTc5NTYxNzEyNiwiZXhwIjoxNzk1NzAzNTI2fQ.2nPcJlOqvAkYCoAQSECFs-4l1s_mLGG--z0uko0f1zQ",
+  "user": {
+    "id": 1,
+    "name": "Admin User",
+    "email": "admin@b2b.com",
+    "role": "admin",
+    "company": "B2B Corp Global HQ",
+    "title": "Chief Procurement Officer",
+    "phone": "+1 (800) 555-0199",
+    "address": "100 Enterprise Way, Suite 400, Chicago, IL 60601",
+    "taxId": "US-EIN-88492019",
+    "creditLimit": 250000,
+    "paymentTerms": "Net-30",
+    "loadingDock": "Central Distribution Gate 1",
+    "joined": "2024-01-10"
+  }
+}

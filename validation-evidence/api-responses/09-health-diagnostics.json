@@ -1,0 +1,15 @@
+{
+  "status": "healthy",
+  "checks": {
+    "memory": "pass",
+    "eventLoop": "pass",
+    "responseTime": "pass",
+    "errorBudget": "pass"
+  },
+  "system": {
+    "uptime": 0.1201929,
+    "heapUsedMb": 6.59,
+    "rssMb": 57.54
+  },
+  "timestamp": "2026-11-25T14:32:06.803Z"
+}

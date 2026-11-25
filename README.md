@@ -181,7 +181,34 @@ Apply the SQL files in `database/migrations/` to the Supabase database before st
 
 ---
 
-## 🚀 5. Section 17 Extension & Advanced Challenges (Internship Highlights)
+## 🖼️ 5. UI Validation Evidence
+
+The application workflows have been comprehensively validated and captured. Detailed analysis, test conditions, API payloads, and execution outputs are recorded in [validation-report.md](file:///d:/arrowstack/project%201/validation-evidence/validation-report.md).
+
+### 01. Login Page & JWT Session Barrier
+![01-login](./validation-evidence/screenshots/01-login.png)
+
+### 02. Executive Operational Dashboard
+![02-dashboard](./validation-evidence/screenshots/02-dashboard.png)
+
+### 03. Wholesale Product Catalog (Stock Clamped)
+![03-catalog](./validation-evidence/screenshots/03-catalog.png)
+
+### 04. Procurement Cart & Terms Summary
+![04-cart](./validation-evidence/screenshots/04-cart.png)
+
+### 05. Purchase Orders Fulfillment Lifecycle
+![05-order](./validation-evidence/screenshots/05-order.png)
+
+### 06. Commercial Net-14 Tax Invoice Generation
+![06-invoice](./validation-evidence/screenshots/06-invoice.png)
+
+### 07. Immutable Regulatory Compliance Audit Trail
+![07-audit-log](./validation-evidence/screenshots/07-audit-log.png)
+
+---
+
+## 🚀 6. Section 17 Extension & Advanced Challenges (Internship Highlights)
 
 OrderHub incorporates all four advanced challenges specified in **Section 17 (Page 4)** of the Arrowstack Internship guide:
 
@@ -192,7 +219,7 @@ OrderHub incorporates all four advanced challenges specified in **Section 17 (Pa
 
 ---
 
-## 📁 6. Repository Structure
+## 📁 7. Repository Structure
 ```
 d:\arrowstack\project 1\
 ├── backend/                    # Node.js / NestJS Modular REST API
@@ -206,6 +233,27 @@ d:\arrowstack\project 1\
 │   │   ├── api.test.js         # Integration test suite (20/20 passing tests)
 │   │   └── benchmark.js        # Before vs. After APM evaluation benchmark
 │   ├── package.json
+├── database/                   # PostgreSQL DDL & Migrations
+│   ├── migrations/
+│   │   ├── 001_initial_schema.sql
+│   │   └── 002_seed_data.sql
+│   └── schema.sql
+├── frontend/                   # React + Vite Enterprise SPA
+├── validation-evidence/        # Master Submission Evidence Package
+│   ├── screenshots/            # 01-login, 02-dashboard, 03-catalog, 04-cart, 05-order, 06-invoice, 07-audit-log
+│   ├── api-responses/          # 10 machine-generated authenticated JSON endpoint exports
+│   ├── database/               # Schema snapshot & verified seed dataset
+│   ├── test-results/           # 20/20 passing test log, APM benchmark, and automation log
+│   └── validation-report.md    # Master validation & quality evidence report
+├── scripts/                    # CLI Operations & Automation Runners
+│   ├── automate_ops.js         # Automated operational routine
+│   └── export_api_responses.js # API validation response exporter
+├── index.html                  # Standalone SPA Platform & Commercial Landing Page
+├── README.md                   # Project overview, quick start & delivery evidence
+├── REQUIREMENTS.md             # Functional & Non-Functional Specifications (FR-01 to FR-17)
+├── TESTING_AND_VALIDATION.md   # Test Cases TC-01 to TC-24 & Evidence Log
+└── EXTENSION_AND_ADVANCED_CHALLENGES.md # Section 17 Master Engineering Report
+```
 │   └── Dockerfile
 ├── frontend/                   # React / Next.js Web Client
 │   ├── src/

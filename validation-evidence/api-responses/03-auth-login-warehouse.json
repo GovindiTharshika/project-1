@@ -1,0 +1,18 @@
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoid2FyZWhvdXNlQGIyYi5jb20iLCJyb2xlIjoid2FyZWhvdXNlIiwiY29tcGFueSI6IkIyQiBDb3JwIEdsb2JhbCBIUSIsIm5hbWUiOiJEYXZlIERpc3BhdGNoZXIiLCJpYXQiOjE3OTU2MTcxMjYsImV4cCI6MTc5NTcwMzUyNn0.dz_d4uC1etxlxz4wwf-R4DMSSLpM0eKMPdVCg7-DFao",
+  "user": {
+    "id": 5,
+    "name": "Dave Dispatcher",
+    "email": "warehouse@b2b.com",
+    "role": "warehouse",
+    "company": "B2B Corp Global HQ",
+    "title": "Warehouse Fulfillment Manager",
+    "phone": "+1 (800) 555-0188",
+    "address": "100 Enterprise Way, Loading Dock Gate 2, Chicago, IL 60601",
+    "taxId": "US-EIN-88492019",
+    "creditLimit": 50000,
+    "paymentTerms": "N/A",
+    "loadingDock": "Central Logistics Dispatch Dock 2",
+    "joined": "2024-04-01"
+  }
+}
